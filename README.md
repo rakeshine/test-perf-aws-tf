@@ -102,7 +102,7 @@ This project sets up a distributed JMeter load testing environment on AWS ECS, s
 1. Create the Lambda deployment package:
    ```bash
    cd ../../lambda
-   pip install -r requirements.txt -t .
+   pip install boto3 -t .
    zip -r function.zip .
    mv function.zip ../envs/prod/
    ```
@@ -112,7 +112,7 @@ This project sets up a distributed JMeter load testing environment on AWS ECS, s
 1. Create a test package:
    ```bash
    mkdir -p test-package
-   # Add your test.jmx and test-data.csv files
+   # Add your config.json, test.jmx and <<test-data>>.csv files
    zip -r test-package.zip test-package/
    ```
 

@@ -494,9 +494,11 @@ resource "aws_lambda_function" "test_run_handler_lambda" {
 
   environment {
     variables = {
-      ECS_CLUSTER     = module.ecs_cluster_us.cluster_name 
-      SUBNETS         = join(",", module.vpc_us.public_subnet_ids)
-      SECURITY_GROUPS = module.vpc_us.security_group_id
+      ECS_CLUSTER        = module.ecs_cluster_us.cluster_name
+      SUBNETS_US         = join(",", module.vpc_us.public_subnet_ids)
+      SECURITY_GROUPS_US = module.vpc_us.security_group_id
+      SUBNETS_EU         = join(",", module.vpc_eu.public_subnet_ids)
+      SECURITY_GROUPS_EU = module.vpc_eu.security_group_id
     }
   }
 }

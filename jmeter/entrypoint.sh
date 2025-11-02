@@ -30,6 +30,9 @@ elif [ "${JMETER_MODE}" == "master" ]; then
  
   echo "Downloading test plan from S3: ${TEST_PLAN_S3}"
   aws s3 sync "${TEST_PLAN_S3}" ./
+  # TODO - To be added into documentation to zip the files as test.zip
+  unzip -o "test.zip" -d .
+  rm -f "test.zip"
  
   if [ -z "${JMETER_SLAVE_HOSTS}" ]; then
     echo "No slaves specified, running locally"
@@ -49,7 +52,7 @@ elif [ "${JMETER_MODE}" == "master" ]; then
     echo "Uploading test results to ${RESULT_S3}"
     aws s3 cp results.jtl "${RESULT_S3}"
  
-    # TODO result JTL to be copied to test-surge-perf-db bucket with timestamp within proper folder
+    # TODO result JTL to be copied to test-surge-perf bucket with timestamp within proper folder
   fi
  
   echo "Test completed, exiting"
