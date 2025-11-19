@@ -49,8 +49,6 @@ resource "azurerm_linux_function_app" "func" {
     ftps_state                            = "Disabled"
     http2_enabled                         = true
     vnet_route_all_enabled                = true
-    application_insights_connection_string = azurerm_application_insights.appinsights.connection_string
-    application_insights_key              = azurerm_application_insights.appinsights.instrumentation_key
 
     application_stack {
       python_version = "3.9"
@@ -64,14 +62,6 @@ resource "azurerm_linux_function_app" "func" {
         name       = "Allow_${replace(ip_restriction.value, "/", "_")}"
         priority   = 100 + index(var.allowed_ips, ip_restriction.value)
         action     = "Allow"
-      }
-    }
-
-    # VNet integration
-    dynamic "vnet_route_all_enabled" {
-      for_each = var.integrate_with_vnet ? [1] : []
-      content {
-        vnet_route_all_enabled = true
       }
     }
   }
@@ -89,12 +79,7 @@ resource "azurerm_linux_function_app" "func" {
   )
 
   # VNet integration
-  dynamic "virtual_network_subnet_id" {
-    for_each = var.integrate_with_vnet ? [1] : []
-    content {
-      subnet_id = var.vnet_subnet_id
-    }
-  }
+  virtual_network_subnet_id = var.integrate_with_vnet ? var.vnet_subnet_id : null
 }
 
 # Role assignment for Storage Account
